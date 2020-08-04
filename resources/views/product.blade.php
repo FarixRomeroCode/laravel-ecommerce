@@ -8,15 +8,14 @@
 
 @section('content')
 
-    <div class="breadcrumbs">
+    {{-- <div class="breadcrumbs">
         <div class="container">
             <a href="/">Home</a>
             <i class="fa fa-chevron-right breadcrumb-separator"></i>
             <a href="{{ route('shop.index') }}">Shop</a>
             <i class="fa fa-chevron-right breadcrumb-separator"></i>
-            <span>Macbook Pro</span>
         </div>
-    </div> <!-- end breadcrumbs -->
+    </div> <!-- end breadcrumbs --> --}}
 
     <div class="product-section container">
         <div class="product-section-image">
