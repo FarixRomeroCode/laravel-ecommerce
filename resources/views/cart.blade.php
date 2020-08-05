@@ -51,6 +51,13 @@
                     </div>
                     <div class="cart-table-row-right">
                         <div class="cart-table-actions">
+                        <form action="{{route('cart.destroy',$item->rowId)}}" method="POST">
+                            
+                            {{csrf_field()}}
+                            {{method_field('DELETE')}}
+                            <button type="submit" class="cart-options">Remove </button>
+
+                        </form>
                             <a href="#">Remove</a> <br>
                             <a href="#">Save for Later</a>
                         </div>
@@ -68,7 +75,7 @@
                 </div> <!-- end cart-table-row -->
                 @endforeach
 
-            </div> <!-- end cart-table -->
+            {{-- </div> <!-- end cart-table -->
 
             <a href="#" class="have-code">Have a Code?</a>
 
@@ -101,7 +108,7 @@
             <div class="cart-buttons">
                 <a href="#" class="button">Continue Shopping</a>
                 <a href="#" class="button-primary">Proceed to Checkout</a>
-            </div>
+            </div> --}}
             @else 
 
             <h3>No items in the Cart!!</h3>
