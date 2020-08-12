@@ -1,13 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Product;
 
 use Illuminate\Http\Request;
 use Cart;   
-use Illuminate\Support\Facades\Validator;
 
-class CartController extends Controller
+
+class SaveForLaterController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,13 +15,8 @@ class CartController extends Controller
      */
     public function index()
     {
-        $mightAlsoLike = Product::mightAlsoLike()->get();
-
-        return view('cart')->with([
-            'mightAlsoLike' => $mightAlsoLike,
-        ]);
+        //
     }
-    
 
     /**
      * Show the form for creating a new resource.
@@ -42,21 +36,8 @@ class CartController extends Controller
      */
     public function store(Request $request)
     {
-        $duplicate= Cart::search(function($cartItem,$rowId) use($request){
-            return $cartItem->id===$request->id;
-        });
-        if($duplicate->isNotEmpty()){
-            return redirect()->route('cart.index')->with('success_message','Item was alredy in your cart!');
-        }
-        Cart::add($request->id,$request->name,1,$request->price)
-        ->associate('App\Product');
-        // dd(Cart::content());
-
-        return redirect()->route('cart.index')->with('success_message','Item was added in your card');
+        //
     }
-
-
-  
 
     /**
      * Display the specified resource.
@@ -90,19 +71,7 @@ class CartController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $validator= Validator::make($request->all(),[
-                'quantity'=> 'required|numeric| between:1,5'
-        ]);
-        if($validator->fails()){ 
-            session()->flash('errors', collect(['Quantity must be between 1 and 5.']) );
-            return response()->json(['success' => false], 400);
-        };
-
-        Cart::update( $id, intval($request->quantity));
-
-        session()->flash('success_message','Cantidad fue actualizada');
-        return response()->json(['success' => true]);
-        }
+    }
 
     /**
      * Remove the specified resource from storage.
@@ -112,26 +81,24 @@ class CartController extends Controller
      */
     public function destroy($id)
     {
-        Cart::remove($id);
+        Cart::instance('saveForLater')->remove($id);
         return back()->with('success_message','Item has been removed');
     }
-    public function switchToSaveForLater($id)
+    public function switchToCart($id)
     {
-        $item= Cart::get($id);
-        Cart::remove($id);
+        $item= Cart::instance('saveForLater')->get($id);
+        Cart::instance('saveForLater')->remove($id);
 
-        $duplicate= Cart::search(function($cartItem,$rowId) use($id){
+        $duplicate= Cart::instance('default')->search(function($cartItem,$rowId) use($id){
             return $rowId===$id;
         });
         if($duplicate->isNotEmpty()){
             return redirect()->route('cart.index')->with('success_message','Item was alredy in your cart!');
         }
 
-        Cart::instance('saveForLater')->add($item->id,$item->name,1,$item->price)->associate('App\Product');
+        Cart::instance('default')->add($item->id,$item->name,1,$item->price)->associate('App\Product');
 
         // return back()->with('sucess_message','Item has been removed');
         return redirect()->route('cart.index')->with('success_message','Item has been saved');
     }
-
-
 }
