@@ -144,6 +144,9 @@
         @endforeach
 
 
+     
+
+
         <div class="checkout-totals">
           <div class="checkout-totals-left">
             Subtotal <br>
@@ -158,11 +161,23 @@
             {{-- -$750.00 <br> --}}
             {{presentPrice(Cart::tax())}}<br>
             <span class="checkout-totals-total">{{presentPrice(Cart::Total())}}</span>
-
           </div>
         </div> <!-- end checkout-totals -->
 
       </div>
+         {{-- cupones --}}
+         <div>
+          <a href="#" class="have-code">Have a Code?</a>
+
+          <div class="have-code-container">
+              <form action="#">
+                  <input type="text">
+                  <button type="submit" class="button button-plain">Apply</button>
+              </form> 
+          </div> <!-- end have-code-container -->
+          
+         </div>
+
 
     </div> <!-- end checkout-section -->
   </div>
